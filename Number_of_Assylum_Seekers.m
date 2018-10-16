@@ -1,8 +1,11 @@
 %% 각 나라별 난민 신청수
-load asylum_o.mat
+%load asylum_o.mat
+asylumseekersmonthly = readtable('asylum_seekers_monthly origin.csv', 'ReadVariableNames', false);
+asylumseekersmonthly(1,:) = [];
 % 필요한 column 분리
-origin = asylumseekersmonthly.Origin;   % 나라 이름
-value = asylumseekersmonthly.Value;     % 난민 신청자 수
+origin = table2array(asylumseekersmonthly(:,2));   % 나라 이름
+value = table2array(asylumseekersmonthly(:,5));     % 난민 신청자 수
+value = str2double(value);
 % NaN값 제거 (Not a Number)
 TF = isnan(value);                      % 숫자면 0, 숫자가 아니면 1이 TF에 저장됨
 value = value(~TF);                     % 원하는 건 숫자이므로 ~TF로 써야함

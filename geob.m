@@ -1,12 +1,16 @@
 %% 나라별 테러 발생 수 geobubble
-load gt.mat
-country = gt(:,1);        % 나라이름
-latitude = gt(:,2);
-longitude = gt(:,3);
+%load gt.mat
+country = categorical(table2array(readtable('global_terror.xlsx', 'Range', 'E:E')));
+latitude = table2array(readtable('global_terror.xlsx', 'Range', 'J:J'));
+longitude = table2array(readtable('global_terror.xlsx', 'Range', 'K:K'));
 
-country = table2array(country);
-latitude = table2array(latitude);
-longitude = table2array(longitude);
+%country = gt(:,1);        % 나라이름
+%latitude = gt(:,2);
+%longitude = gt(:,3);
+
+%country = table2array(country);
+%latitude = table2array(latitude);
+%longitude = table2array(longitude);
 
 % latitude NaN 제거
 tf = isnan(latitude);           % NaN이면 1, 아니면 0
@@ -26,7 +30,7 @@ mean_longitude = splitapply(@mean, longitude, group_num);    % 나라별 longitude 
 value = ones(size(group_num));                % v는 테러 발생 횟수를 세기 위한 column
 sum_value = splitapply(@sum, value, group_num);   % 나라별 테러 발생 횟수
 subplot(2,1,1);
-geobubble(mean_latitude, mean_longitude, sum_value, groups);
+geo = geobubble(mean_latitude, mean_longitude, sum_value, groups);
 
 % 테러 발생 횟수 상위 30개국
 ta = [array2table(groups), array2table(mean_latitude), array2table(mean_longitude), array2table(sum_value)];
@@ -39,5 +43,5 @@ longitude30 = table2array(ta(:,3));
 value30 = table2array(ta(:,4));
 
 subplot(2,1,2);
-geo = geobubble(latitude30, longitude30, value30, country30);
-geo.Basemap = 'bluegreen';       % 배경 바꾸기
+geo30 = geobubble(latitude30, longitude30, value30, country30);
+geo30.Basemap = 'bluegreen';       % 배경 바꾸기

@@ -1,8 +1,19 @@
 %%
 %resettlement2.csv에서 필요한 데이터인
 %Countryterritoryofasylumresidence,Origin,Value 추출후 resettle_stacked.mat로 저장
-load resettle_stacked.mat;
-[group_num, country, origin] = findgroups(Countryterritoryofasylumresidence, Origin);
+%load resettle_stacked.mat;
+resettlement = readtable('resettlement2.csv', 'ReadVariableNames', false);
+resettlement(1,:) = [];
+resettlement = table2array(resettlement);
+
+Country = resettlement(:,1);
+Country = categorical(Country);
+Origin = resettlement(:,2);
+Origin = categorical(Origin);
+Value = resettlement(:,4);
+Value = str2double(Value);
+
+[group_num, country, origin] = findgroups(Country, Origin);
 sa = splitapply(@sum, Value, group_num);
 
 % 아프간, 시리아, 아랍 출신만 추출
